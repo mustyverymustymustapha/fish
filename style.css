@@ -21,10 +21,29 @@ body {
 
 .fish {
     position: absolute;
+    transition: all 0.5s ease;
+}
+
+.goldfish {
     width: 40px;
     height: 20px;
-    border-radius: 50%;
-    transition: all 0.5s ease;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background-color: orange;
+}
+
+.clownfish {
+    width: 30px;
+    height: 15px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background-color: #FF7F00;
+    border: 2px solid white;
+}
+
+.angelfish {
+    width: 25px;
+    height: 35px;
+    background-color: silver;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 #sun-moon {

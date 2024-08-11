@@ -1,31 +1,41 @@
 const fishTank = document.getElementById('fish-tank');
 const sunMoon = document.getElementById('sun-moon');
-const numFish = 5;
 let isDay = true;
 
-function createFish() {
-    const fish = document.createElement('div');
-    fish.className = 'fish';
-    fish.style.left = `${Math.random() * 560}px`;
-    fish.style.top = `${Math.random() * 360}px`;
-    fish.style.backgroundColor = getRandomColor();
-    fishTank.appendChild(fish);
-    return fish;
-}
+const fishSpecies = ['goldfish', 'clownfish', 'angelfish'];
+const numFishPerSpecies = 3;
 
-function getRandomColor() {
-    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-}
+class Fish {
+    constructor(species) {
+        this.element = document.createElement('div');
+        this.element.className = `fish ${species}`;
+        this.element.style.left = `${Math.random() * 560}px`;
+        this.element.style.top = `${Math.random() * 360}px`;
+        fishTank.appendChild(this.element);
+        
+        this.speed = Math.random() * 2 + 1;
+        this.direction = Math.random() * 2 * Math.PI;
+    }
 
-function moveFish(fish) {
-    const newX = Math.random() * 560;
-    const newY = Math.random() * 360;
-    fish.style.left = `${newX}px`;
-    fish.style.top = `${newY}px`;
-}
+    move() {
+        let newX = parseFloat(this.element.style.left) + Math.cos(this.direction) * this.speed;
+        let newY = parseFloat(this.element.style.top) + Math.sin(this.direction) * this.speed;
 
-function changeColor(fish) {
-    fish.style.backgroundColor = getRandomColor();
+        if (newX < 0 || newX > 560 || newY < 0 || newY > 360) {
+            this.direction = Math.random() * 2 * Math.PI;
+            newX = Math.max(0, Math.min(560, newX));
+            newY = Math.max(0, Math.min(360, newY));
+        }
+
+        this.element.style.left = `${newX}px`;
+        this.element.style.top = `${newY}px`;
+
+        if (Math.cos(this.direction) < 0) {
+            this.element.style.transform = 'scaleX(-1)';
+        } else {
+            this.element.style.transform = 'scaleX(1)';
+        }
+    }
 }
 
 function toggleDayNight() {
@@ -41,11 +51,16 @@ function toggleDayNight() {
     }
 }
 
-for (let i = 0; i < numFish; i++) {
-    const fish = createFish();
-    setInterval(() => moveFish(fish), Math.random() * 2000 + 1000);
-    setInterval(() => changeColor(fish), Math.random() * 3000 + 2000);
-}
+let allFish = [];
+fishSpecies.forEach(species => {
+    for (let i = 0; i < numFishPerSpecies; i++) {
+        allFish.push(new Fish(species));
+    }
+});
+
+setInterval(() => {
+    allFish.forEach(fish => fish.move());
+}, 50);
 
 sunMoon.style.backgroundColor = '#FFD700';
 sunMoon.style.boxShadow = '0 0 20px #FFD700';
