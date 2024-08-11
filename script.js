@@ -1,5 +1,7 @@
 const fishTank = document.getElementById('fish-tank');
+const sunMoon = document.getElementById('sun-moon');
 const numFish = 5;
+let isDay = true;
 
 function createFish() {
     const fish = document.createElement('div');
@@ -26,8 +28,26 @@ function changeColor(fish) {
     fish.style.backgroundColor = getRandomColor();
 }
 
+function toggleDayNight() {
+    isDay = !isDay;
+    if (isDay) {
+        fishTank.style.backgroundColor = '#00bfff';
+        sunMoon.style.backgroundColor = '#FFD700';
+        sunMoon.style.boxShadow = '0 0 20px #FFD700';
+    } else {
+        fishTank.style.backgroundColor = '#000080';
+        sunMoon.style.backgroundColor = '#F4F4F4';
+        sunMoon.style.boxShadow = '0 0 20px #F4F4F4';
+    }
+}
+
 for (let i = 0; i < numFish; i++) {
     const fish = createFish();
     setInterval(() => moveFish(fish), Math.random() * 2000 + 1000);
     setInterval(() => changeColor(fish), Math.random() * 3000 + 2000);
 }
+
+sunMoon.style.backgroundColor = '#FFD700';
+sunMoon.style.boxShadow = '0 0 20px #FFD700';
+
+setInterval(toggleDayNight, 10000);
